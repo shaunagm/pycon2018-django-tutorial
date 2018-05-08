@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Choice, Question
+from .models import Choice, Question, Comment
+from .forms import CommentForm
 
 
 class IndexView(generic.ListView):
@@ -71,3 +72,18 @@ class UsersView(LoginRequiredMixin, generic.ListView):
             context["non_staff"] = [user for user in User.objects.all() if
                                 not user.is_staff]
             return context
+
+
+class CreateCommentView(generic.edit.CreateView):
+    template_name = 'polls/add_comment.html'
+    form_class = CommentForm
+
+    def get_success_url(self):
+        return reverse('polls:detail', kwargs={'pk': self.object.question.id})
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateCommentView, self).get_form_kwargs()
+        kwargs['question_pk'] = self.kwargs.get('pk')
+        if self.request.user.is_authenticated:
+            kwargs['author'] = self.request.user.username
+        return kwargs

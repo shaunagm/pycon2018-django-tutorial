@@ -36,3 +36,15 @@ class Profile(models.Model):
 
     def __str__(self):
             return 'Profile for user {}'.format(self.user)
+
+
+class Comment(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    author = models.CharField(max_length=200)
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return 'Comment by {} on question {}: {}'.format(self.author,
+                                                       self.question,
+                                                       self.text)
