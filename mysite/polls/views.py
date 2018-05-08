@@ -60,3 +60,11 @@ def vote(request, question_id):
 class UsersView(generic.ListView):
     model = User
     template_name = 'polls/users.html'
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context["staff"] = [user for user in User.objects.all() if
+                                user.is_staff]
+            context["non_staff"] = [user for user in User.objects.all() if
+                                not user.is_staff]
+            return context

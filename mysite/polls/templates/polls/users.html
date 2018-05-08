@@ -2,6 +2,32 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
 
+<h2> Staff </h2>
+
+{% if staff %}
+    <ul>
+    {% for staffer in staff %}
+        <li>{{ staffer.profile }} - {{ staffer.profile.bio }} </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No staffers are available.</p>
+{% endif %}
+
+<h2> Non Staff </h2>
+
+{% if non_staff %}
+    <ul>
+    {% for non_staffer in non_staff %}
+        <li>{{ non_staffer.profile }} - {{ non_staffer.profile.bio }} </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No non-staffers are available.</p>
+{% endif %}
+
+<h2> All </h2>
+
 {% if user_list %}
     <ul>
     {% for user in user_list %}
